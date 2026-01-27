@@ -38,7 +38,7 @@ async def lifespan(app: FastAPI):
         start_scheduler()
         logger.info("All services initialized successfully")
     except Exception as e:
-        logger.error(f"Startup failed: {e}", exc_info=True)
+        logger.error("Startup failed: {}", str(e), exc_info=True)
         raise
 
     yield

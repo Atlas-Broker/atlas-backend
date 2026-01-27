@@ -37,18 +37,28 @@ async def init_mongodb():
     """Initialize MongoDB connection and indexes (called on startup)."""
     db = get_database()
 
-    # Create indexes for agent_runs collection
-    await db.agent_runs.create_index("run_id", unique=True)
-    await db.agent_runs.create_index("user_id")
-    await db.agent_runs.create_index("timestamp")
-    await db.agent_runs.create_index([("timestamp", -1)])  # Descending for recent queries
+    try:
+        # Create indexes for agent_runs collection
+        await db.agent_runs.create_index("run_id", unique=True)
+        await db.agent_runs.create_index("user_id")
+        await db.agent_runs.create_index("timestamp")
+        await db.agent_runs.create_index([("timestamp", -1)])  # Descending for recent queries
 
-    # Create indexes for market_data_cache collection
-    await db.market_data_cache.create_index("symbol")
-    await db.market_data_cache.create_index("cache_key", unique=True)
-    await db.market_data_cache.create_index("expires_at", expireAfterSeconds=0)  # TTL index
+        # Create indexes for market_data_cache collection
+        await db.market_data_cache.create_index("symbol")
+        # Use sparse=True to allow null values, only enforce uniqueness on non-null
+        await db.market_data_cache.create_index("cache_key", unique=True, sparse=True)
+        await db.market_data_cache.create_index("expires_at", expireAfterSeconds=0)  # TTL index
 
-    logger.info("MongoDB indexes created")
+        logger.info("MongoDB indexes created")
+    except Exception as e:
+        # If index already exists or has duplicate keys, handle gracefully
+        error_str = str(e).lower()
+        if "already exists" in error_str or "duplicate key" in error_str:
+            logger.warning(f"MongoDB index warning (non-critical): {e}")
+            logger.info("Continuing with existing indexes")
+        else:
+            raise
 
 
 async def close_mongodb():

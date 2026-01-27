@@ -4,12 +4,13 @@ uvicorn[standard]==0.27.0
 python-multipart==0.0.6
 
 # Google AI
-google-generativeai==0.3.2
+google-generativeai>=0.8.0
 
 # Databases
 asyncpg==0.29.0
 sqlalchemy[asyncio]==2.0.25
-motor==3.3.2
+pymongo>=4.5,<5.0
+motor==3.5.2
 boto3==1.34.34
 
 # Market Data

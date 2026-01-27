@@ -74,3 +74,54 @@ async def get_pilot_status(user: User = Depends(verify_clerk_token)):
         if last_run
         else None,
     }
+
+
+# ============================================================
+# DEVELOPMENT ENDPOINTS (No Authentication Required)
+# ============================================================
+
+@router.post("/run-pilot-dev")
+async def trigger_pilot_dev():
+    """
+    🔓 DEV ONLY: Trigger autonomous pilot without authentication.
+    
+    ⚠️ WARNING: This endpoint bypasses authentication!
+    Only available in development mode.
+    
+    Use this for local testing without setting up Clerk authentication.
+    """
+    from app.config import settings
+    
+    if settings.ENVIRONMENT != "development":
+        raise HTTPException(
+            status_code=403,
+            detail="This endpoint is only available in development mode"
+        )
+    
+    logger.info("DEV: Manually triggered pilot run (no auth)")
+    
+    try:
+        result = await run_autonomous_pilot()
+        
+        return {
+            "run_id": result["run_id"],
+            "status": result["status"],
+            "mode": "development",
+            "trades_executed": result.get("reflection", {}).get("trades_executed", 0),
+            "total_decisions": len(result.get("decisions", [])),
+            "duration_ms": result.get("duration_ms"),
+            "message": "✅ Pilot run completed successfully (DEV MODE)",
+            "decisions_summary": [
+                {
+                    "symbol": d.get("symbol"),
+                    "action": d.get("action"),
+                    "quantity": d.get("quantity"),
+                    "confidence": d.get("confidence", 0)
+                }
+                for d in result.get("decisions", [])
+            ]
+        }
+        
+    except Exception as e:
+        logger.error(f"DEV pilot run failed: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Pilot run failed: {str(e)}")

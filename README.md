@@ -1,72 +1,33 @@
-# Atlas Backend - Intelligence API
+# Atlas Backend
 
-**Agentic AI Swing Trading Backend with Real-Time Streaming**
+**AI-Powered Autonomous Trading API**
 
----
+FastAPI backend with multi-agent autonomous trading system powered by Google Gemini 2.0 Flash.
 
-## 🎯 Overview
-
-Atlas Backend is the Intelligence API powering Atlas - an agentic AI swing trading platform. This FastAPI backend provides:
-
-- **🤖 Streaming Agent Copilot** - Real-time trade analysis with human-in-the-loop approval
-- **🚀 Autonomous Paper Trader** - Scheduled agent that trades autonomously
-- **📊 Dual Storage Architecture** - PostgreSQL for facts, MongoDB for agent thoughts
-- **🔄 Real-Time Streaming** - Server-Sent Events (SSE) for live agent reasoning
-- **📈 Complete Observability** - Full black box flight recorder for every decision
+[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.109+-green.svg)](https://fastapi.tiangolo.com)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ---
 
-## 🏗️ Architecture
+## 🌟 Features
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                      Next.js Frontend                        │
-│                  (User Interface + Charts)                   │
-└────────────────────┬────────────────────────────────────────┘
-                     │ HTTP + SSE Streaming
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    FastAPI Backend                           │
-│  ┌─────────────┐  ┌──────────────┐  ┌──────────────────┐  │
-│  │   Agent     │  │   Market     │  │    Portfolio     │  │
-│  │Orchestrator │  │Data Service  │  │   Management     │  │
-│  │(Streaming)  │  │(Yahoo $$)    │  │  (Paper Trade)   │  │
-│  └─────────────┘  └──────────────┘  └──────────────────┘  │
-│          │                │                    │             │
-│          ▼                ▼                    ▼             │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │           Gemini 2.0 Flash (Function Calling)        │  │
-│  └──────────────────────────────────────────────────────┘  │
-└───────┬──────────────────────────────────┬─────────────────┘
-        │                                  │
-        ▼                                  ▼
-┌───────────────────┐            ┌──────────────────┐
-│  Supabase (SQL)   │            │  MongoDB         │
-│  - Orders         │            │  - Agent Traces  │
-│  - Positions      │            │  - Market Cache  │
-│  - Equity Curve   │            │  - Reasoning     │
-└───────────────────┘            └──────────────────┘
-```
+### Multi-Agent Autonomous Trading
+- **4 Specialized AI Agents**: Market Analyst, Risk Manager, Portfolio Manager, Execution Agent
+- **Agent Communication Hub**: Transparent inter-agent messaging
+- **PPAR Loop**: Perceive → Plan → Act → Reflect autonomous cycle
+- **Full Observability**: Every decision traced and logged to MongoDB
 
-### Two Operating Modes
+### Real-Time Streaming Copilot
+- **Server-Sent Events (SSE)**: Stream agent thinking in real-time
+- **Human-in-the-Loop**: AI proposes, human approves
+- **Interactive Analysis**: Ask questions, get detailed market insights
 
-**Lane A - Trader Copilot** (Human-in-the-Loop)
-```
-User Intent → Agent Analysis (streaming) → Trade Proposal → Human Approval → Execution
-```
-
-**Lane B - Autonomous Pilot** (Scheduled)
-```
-Cron Trigger → Perceive → Plan → Act → Reflect → Equity Snapshot
-```
-
----
-
-## 📚 Documentation
-
-- **[SETUP_GUIDE.md](./knowledge/SETUP_GUIDE.md)** - Complete step-by-step setup instructions
-- **[PROJECT_SUMMARY.md](./knowledge/PROJECT_SUMMARY.md)** - Comprehensive overview of what was built
-- **[API Docs (Swagger)](http://localhost:8000/docs)** - Interactive API documentation (when server is running)
+### Production-Ready Architecture
+- **Dual Database**: Supabase (facts) + MongoDB (thoughts)
+- **Market Data**: Yahoo Finance integration with caching
+- **Scheduled Jobs**: Autonomous pilot runs 9am & 3pm EST (weekdays)
+- **Paper Trading**: Safe testing environment before live trading
 
 ---
 
@@ -75,16 +36,15 @@ Cron Trigger → Perceive → Plan → Act → Reflect → Equity Snapshot
 ### Prerequisites
 
 - Python 3.11+
-- Docker & Docker Compose (optional, for local MongoDB)
 - Supabase account
-- MongoDB Atlas account (or local MongoDB)
-- Google AI API key (Gemini)
-- Clerk account (for authentication)
+- MongoDB Atlas account
+- Google AI API key (Gemini 2.0 Flash)
 
-### 1. Clone and Setup
+### Installation
 
 ```bash
-git clone <your-repo>
+# Clone the repository
+git clone <your-repo-url>
 cd atlas-backend
 
 # Create virtual environment
@@ -93,414 +53,355 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Copy environment template
+cp env.example .env
+
+# Edit .env with your credentials
+# - SUPABASE_URL
+# - SUPABASE_SERVICE_ROLE_KEY
+# - MONGODB_URI
+# - GOOGLE_API_KEY
 ```
 
-### 2. Environment Configuration
-
-Copy `.env.example` to `.env` and fill in your credentials:
+### Database Setup
 
 ```bash
-cp .env.example .env
+# 1. Run Supabase migration
+# Go to: https://app.supabase.com/project/YOUR_PROJECT/sql
+# Copy: ../atlas-database/migrations/supabase/001_unified_schema.sql
+# Execute in SQL Editor
+
+# 2. Setup MongoDB indexes
+cd ../atlas-database
+python scripts/run_mongodb_setup.py
 ```
 
-Required variables:
-- `SUPABASE_URL` - Your Supabase project URL
-- `SUPABASE_SERVICE_ROLE_KEY` - Supabase service role key
-- `DATABASE_URL` - PostgreSQL connection string
-- `MONGODB_URI` - MongoDB connection string
-- `GOOGLE_AI_API_KEY` - Google AI (Gemini) API key
-- `CLERK_SECRET_KEY` - Clerk authentication secret
+### Run the Server
 
-### 3. Database Setup
-
-**Supabase (PostgreSQL):**
 ```bash
-# Run migration in Supabase SQL Editor
-# Copy contents of migrations/supabase/001_paper_trading.sql
-```
-
-**MongoDB:**
-```bash
-# Indexes are created automatically on startup
-# Or use Docker Compose for local MongoDB
-docker-compose up mongodb -d
-```
-
-### 4. Run the Server
-
-**Development:**
-```bash
+# Development mode (with auto-reload)
 uvicorn app.main:app --reload
-```
 
-**Production:**
-```bash
+# Production mode
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
-**Docker Compose (recommended for local dev):**
-```bash
-docker-compose up
-```
+Server runs at: **http://localhost:8000**
 
-The API will be available at: `http://localhost:8000`
-
-### 5. Test the API
-
-Open your browser to:
-- **Swagger Docs**: http://localhost:8000/docs
-- **Health Check**: http://localhost:8000/health
-
----
-
-## 📡 API Endpoints
-
-### 🤖 Agent Copilot
-
-**`POST /api/v1/agent/analyze`** - Stream agent analysis (SSE)
-
-```javascript
-// Frontend example
-const eventSource = new EventSource('/api/v1/agent/analyze', {
-  headers: { 'Authorization': `Bearer ${token}` }
-});
-
-eventSource.addEventListener('thinking', (e) => {
-  const data = JSON.parse(e.data);
-  console.log('Agent thinking:', data.thought);
-});
-
-eventSource.addEventListener('proposal', (e) => {
-  const proposal = JSON.parse(e.data);
-  console.log('Trade proposal:', proposal);
-});
-```
-
-### 📋 Orders
-
-- `POST /api/v1/orders/{order_id}/approve` - Approve proposed trade
-- `POST /api/v1/orders/{order_id}/reject` - Reject proposed trade
-- `GET /api/v1/orders` - List orders (with filters)
-
-### 💼 Portfolio
-
-- `GET /api/v1/portfolio/summary` - Current holdings and P&L
-- `GET /api/v1/portfolio/equity-curve` - Historical equity data
-- `GET /api/v1/portfolio/positions` - Current positions
-
-### 📊 Trades
-
-- `GET /api/v1/trades/recent` - Recent filled orders
-
-### 🔍 Traces
-
-- `GET /api/v1/traces/{run_id}` - Full MongoDB trace
-- `GET /api/v1/traces` - List recent agent runs
-
-### ⚙️ Jobs (Admin)
-
-- `POST /api/v1/jobs/run-pilot` - Manually trigger pilot
-- `GET /api/v1/jobs/pilot-status` - Check pilot status
-
----
-
-## 🎭 Streaming Agent Flow
-
-The streaming agent is the **centerpiece** of this backend:
-
-```
-User: "Should I buy NVDA?"
-  ↓
-[ANALYZING] Agent starts reasoning
-  ↓ SSE: event=status, data={"status":"ANALYZING"}
-  ↓
-[THINKING] "Let me check NVDA's current price..."
-  ↓ SSE: event=thinking, data={"thought":"..."}
-  ↓
-[TOOL CALL] get_market_data(symbol="NVDA")
-  ↓ SSE: event=tool_call, data={"tool":"get_market_data"}
-  ↓
-[TOOL RESULT] NVDA: $140.50 (+2.34%)
-  ↓ SSE: event=tool_result, data={"summary":"NVDA: $140.50"}
-  ↓
-[THINKING] "RSI is at 65, bullish trend..."
-  ↓
-[PROPOSING] Generate trade recommendation
-  ↓ SSE: event=status, data={"status":"PROPOSING"}
-  ↓
-[PROPOSAL] BUY 10 NVDA @ $140.50
-  ↓ SSE: event=proposal, data={"action":"BUY",...}
-  ↓
-[COMPLETE] Trace saved to MongoDB
-  ↓ SSE: event=complete, data={"trace_id":"abc-123"}
-```
-
-Frontend receives **live updates** at each step!
+API documentation: **http://localhost:8000/docs**
 
 ---
 
 ## 🤖 Autonomous Pilot
 
-The pilot runs on a cron schedule (default: 9am and 3pm EST weekdays):
+### Trigger Manually
 
-**PPAR Loop:**
-
-1. **Perceive** - Load portfolio, fetch market data for watchlist
-2. **Plan** - Agent analyzes each symbol, decides BUY/SELL/HOLD
-3. **Act** - Execute trades automatically (no approval needed)
-4. **Reflect** - Compute P&L, generate lessons learned
-
-Manual trigger:
 ```bash
-python scripts/run_pilot.py
-```
+# Development endpoint (no authentication)
+curl -X POST http://localhost:8000/api/v1/jobs/run-pilot-dev
 
-Or via API:
-```bash
+# Production endpoint (requires authentication)
 curl -X POST http://localhost:8000/api/v1/jobs/run-pilot \
-  -H "Authorization: Bearer $TOKEN"
+  -H "Authorization: Bearer YOUR_TOKEN"
 ```
+
+### Scheduled Runs
+
+Automatic runs at:
+- **9:00 AM EST** (market open)
+- **3:00 PM EST** (before close)
+- **Monday - Friday** only
+
+### What It Does
+
+1. **Perceive**: Analyzes watchlist symbols using market data
+2. **Plan**: Risk manager evaluates trades, portfolio manager checks constraints
+3. **Act**: Execution agent makes final decision, creates orders in database
+4. **Reflect**: Analyzes performance, updates equity snapshots
 
 ---
 
-## 📦 Data Storage
+## 🏗️ Architecture
 
-### Supabase (PostgreSQL) - **FACTS**
+### Multi-Agent System
 
-Transactional data:
-- Paper accounts (cash, equity)
-- Orders (PROPOSED → APPROVED → FILLED)
-- Positions (current holdings)
-- Equity snapshots (time series)
+```
+┌─────────────────────────────────────────┐
+│        Multi-Agent Coordinator           │
+└─────────────┬───────────────────────────┘
+              │
+    ┌─────────┼─────────┐
+    │         │         │
+    ▼         ▼         ▼         ▼
+┌────────┐ ┌─────┐ ┌──────────┐ ┌───────────┐
+│ Market │ │Risk │ │Portfolio │ │ Execution │
+│Analyst │ │ Mgr │ │ Manager  │ │   Agent   │
+└────────┘ └─────┘ └──────────┘ └───────────┘
+    │         │         │             │
+    └─────────┴─────────┴─────────────┘
+              │
+    ┌─────────▼─────────┐
+    │ Communication Hub  │
+    └───────────────────┘
+```
 
-### MongoDB - **THOUGHTS**
+### Database Architecture
 
-Agent traces (black box):
-- Complete reasoning chains
-- Tool calls with raw Yahoo Finance responses
-- Market data snapshots (what agent saw)
-- Proposals and decisions
+**Supabase (PostgreSQL)** - Facts:
+- `profiles` - User profiles (Clerk + system accounts)
+- `accounts` - Trading accounts (paper/live)
+- `orders` - Complete order history
+- `positions` - Current holdings
+- `equity_snapshots` - Portfolio value time series
 
-**Why?** Enables reproducing agent decisions at any point in time.
+**MongoDB** - Thoughts:
+- `agent_runs` - Complete AI execution traces
+- `market_data_cache` - Cached Yahoo Finance data
 
 ---
 
-## 🔐 Authentication
+## 📡 API Endpoints
 
-Uses **Clerk JWT** tokens:
+### Health & Status
 
-```python
-@router.get("/protected")
-async def protected_route(user: User = Depends(verify_clerk_token)):
-    return {"user_id": user.id}
+```bash
+GET  /health              # Health check
+GET  /api/v1/status       # System status
 ```
 
-Frontend sends:
+### Agent Operations
+
+```bash
+POST /api/v1/agent/analyze           # Stream analysis (SSE)
+POST /api/v1/jobs/run-pilot          # Trigger pilot (auth required)
+POST /api/v1/jobs/run-pilot-dev      # Trigger pilot (dev only)
+GET  /api/v1/jobs/status             # Job status
 ```
-Authorization: Bearer <clerk-jwt-token>
+
+### Portfolio & Trading
+
+```bash
+GET  /api/v1/portfolio/summary       # Portfolio overview
+GET  /api/v1/positions               # Current positions
+GET  /api/v1/orders                  # Order history
+POST /api/v1/orders                  # Create order
+PUT  /api/v1/orders/{id}/approve     # Approve order
+GET  /api/v1/trades/recent           # Recent trades
 ```
+
+### Traces & Observability
+
+```bash
+GET  /api/v1/traces                  # List agent runs
+GET  /api/v1/traces/{run_id}         # Get specific trace
+```
+
+See full API docs: **http://localhost:8000/docs**
 
 ---
 
-## 🧪 Testing
-
-```bash
-# Run tests
-pytest
-
-# Run with coverage
-pytest --cov=app
-
-# Seed test data
-python scripts/seed_db.py
-```
-
----
-
-## 📊 Observability
-
-Every agent run is fully logged:
-
-**View in MongoDB:**
-```javascript
-db.agent_runs.findOne({run_id: "abc-123"})
-```
-
-**View via API:**
-```bash
-GET /api/v1/traces/abc-123
-```
-
-Contains:
-- ✅ All tool calls with timestamps
-- ✅ Raw market data snapshots
-- ✅ Agent reasoning text
-- ✅ Confidence scores
-- ✅ Final proposal
-
----
-
-## 🐳 Docker Deployment
-
-### Build Image
-
-```bash
-docker build -t atlas-backend .
-```
-
-### Run Container
-
-```bash
-docker run -p 8000:8000 --env-file .env atlas-backend
-```
-
-### Docker Compose (Full Stack)
-
-```bash
-docker-compose up
-```
-
-Includes:
-- FastAPI backend
-- MongoDB (local)
-
----
-
-## ☁️ Production Deployment
-
-### Recommended: AWS App Runner
-
-1. **Build and push Docker image:**
-```bash
-docker build -t atlas-backend .
-docker tag atlas-backend:latest <your-ecr-repo>:latest
-docker push <your-ecr-repo>:latest
-```
-
-2. **Create App Runner service:**
-   - Source: ECR
-   - Enable auto-deployment
-   - Set environment variables via Secrets Manager
-
-3. **Configure:**
-   - Port: 8000
-   - Health check: `/health`
-   - Auto-scaling: 1-10 instances
-
-**Why App Runner?**
-- ✅ Native streaming support (critical!)
-- ✅ Auto-scaling
-- ✅ HTTPS out of the box
-- ✅ Simpler than ECS/EKS
-
-### Alternative: EC2 + Docker
-
-```bash
-# On EC2 instance
-docker-compose -f docker-compose.prod.yml up -d
-```
-
----
-
-## 🛠️ Development
-
-### Code Formatting
-
-```bash
-# Format code
-black app/
-
-# Lint
-ruff check app/
-
-# Type check
-mypy app/
-```
+## 🧪 Development
 
 ### Project Structure
 
 ```
 atlas-backend/
 ├── app/
-│   ├── agents/          # Agent logic (orchestrator, tools, prompts)
-│   ├── api/             # FastAPI routes
-│   ├── db/              # Database clients (Supabase, MongoDB, S3)
-│   ├── middleware/      # Auth, logging, error handling
-│   ├── schemas/         # Pydantic models
-│   ├── scheduler/       # APScheduler jobs
-│   ├── services/        # Business logic
-│   └── utils/           # Utilities
-├── migrations/          # SQL migrations
-├── scripts/             # Utility scripts
-├── tests/               # Test suite
-└── requirements.txt     # Dependencies
+│   ├── agents/              # Multi-agent system
+│   │   ├── coordinator.py           # Orchestrates all agents
+│   │   ├── market_analyst_agent.py  # Market analysis
+│   │   ├── risk_manager_agent.py    # Risk assessment
+│   │   ├── portfolio_manager_agent.py
+│   │   ├── execution_agent.py       # Final decisions
+│   │   ├── agent_communication.py   # Inter-agent messaging
+│   │   └── autonomous_pilot.py      # Scheduled autonomous runs
+│   │
+│   ├── api/v1/              # API routes
+│   │   ├── agent.py         # Agent endpoints
+│   │   ├── jobs.py          # Job management
+│   │   ├── portfolio.py     # Portfolio endpoints
+│   │   └── traces.py        # Trace endpoints
+│   │
+│   ├── db/                  # Database clients
+│   │   ├── supabase/        # PostgreSQL
+│   │   └── mongodb/         # MongoDB
+│   │
+│   ├── services/            # Business logic
+│   │   ├── market_data.py   # Yahoo Finance
+│   │   ├── portfolio.py     # Portfolio management
+│   │   └── order_execution.py
+│   │
+│   ├── scheduler/           # APScheduler jobs
+│   └── main.py              # FastAPI app
+│
+├── doc/                     # Documentation
+├── scripts/                 # Utility scripts
+└── requirements.txt         # Python dependencies
+```
+
+### Environment Variables
+
+See `env.example` for all required variables:
+
+```bash
+# Server
+ENVIRONMENT=development
+PORT=8000
+
+# Supabase
+SUPABASE_URL=https://xxx.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=eyJxxx
+
+# MongoDB
+MONGODB_URI=mongodb+srv://xxx
+MONGODB_DB_NAME=atlas-mongodb
+
+# Google AI
+GOOGLE_API_KEY=AIzaxxx
+
+# Clerk (optional for auth)
+CLERK_SECRET_KEY=sk_xxx
+```
+
+### Testing
+
+```bash
+# Run tests
+pytest
+
+# Run specific test
+pytest tests/test_agents/test_coordinator.py
+
+# With coverage
+pytest --cov=app tests/
 ```
 
 ---
 
-## 🎯 Success Criteria
+## 📊 Monitoring & Logs
 
-When everything works:
+### Structured Logging
 
-1. ✅ Start server: `uvicorn app.main:app --reload`
-2. ✅ Swagger docs: `http://localhost:8000/docs`
-3. ✅ Call streaming agent: `POST /api/v1/agent/analyze`
-4. ✅ See real-time SSE events in browser/Postman
-5. ✅ Approve trade: `POST /api/v1/orders/{id}/approve`
-6. ✅ Check portfolio: `GET /api/v1/portfolio/summary`
-7. ✅ View equity curve: `GET /api/v1/portfolio/equity-curve`
-8. ✅ Trigger pilot: `POST /api/v1/jobs/run-pilot`
-9. ✅ View traces: `GET /api/v1/traces/{run_id}`
-10. ✅ Run in Docker: `docker-compose up`
+All logs use structured format with Loguru:
 
----
+```python
+from loguru import logger
 
-## 🔧 Troubleshooting
+logger.info("Order created", order_id=order.id, symbol=order.symbol)
+logger.error("Order failed", order_id=order.id, error=str(e))
+```
 
-### Streaming not working
+### Trace Every Decision
 
-- Check CORS configuration allows streaming
-- Verify `X-Accel-Buffering: no` header is set
-- Test with curl or Postman (supports SSE)
+Every agent run is logged to MongoDB:
 
-### Database connection errors
+```javascript
+{
+  "run_id": "abc-123",
+  "mode": "autonomous_multi_agent",
+  "timestamp": "2026-01-27T14:30:00Z",
+  "tools_called": [...],
+  "agent_communication_log": [...],
+  "decisions": [...],
+  "status": "COMPLETE"
+}
+```
 
-- Verify environment variables are set
-- Check Supabase connection string format
-- Ensure MongoDB is accessible
-
-### Gemini API errors
-
-- Verify `GOOGLE_AI_API_KEY` is valid
-- Check API quota limits
-- Review function calling format
+View traces: `GET /api/v1/traces`
 
 ---
 
-## 📚 Learn More
+## 🚢 Deployment
 
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [Gemini Function Calling](https://ai.google.dev/docs/function_calling)
-- [Server-Sent Events (SSE)](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
-- [Supabase Docs](https://supabase.com/docs)
-- [MongoDB Motor](https://motor.readthedocs.io/)
+### Docker
+
+```bash
+# Build image
+docker build -t atlas-backend .
+
+# Run container
+docker run -p 8000:8000 --env-file .env atlas-backend
+```
+
+### Docker Compose
+
+```bash
+docker-compose up -d
+```
+
+### AWS EC2
+
+```bash
+# 1. Launch EC2 instance (t3.small or larger)
+# 2. SSH into instance
+# 3. Install dependencies
+sudo apt update
+sudo apt install python3.11 python3-pip
+
+# 4. Clone repo
+git clone <your-repo>
+cd atlas-backend
+
+# 5. Install requirements
+pip3 install -r requirements.txt
+
+# 6. Setup systemd service
+sudo cp deployment/atlas-backend.service /etc/systemd/system/
+sudo systemctl enable atlas-backend
+sudo systemctl start atlas-backend
+```
+
+---
+
+## 📚 Documentation
+
+Complete documentation in `doc/` folder:
+
+- **[00_README.md](./doc/00_README.md)** - Overview
+- **[01_INDEX.md](./doc/01_INDEX.md)** - Documentation index
+- **[10_MULTI_AGENT_SYSTEM.md](./doc/10_MULTI_AGENT_SYSTEM.md)** - Multi-agent architecture ⭐
+- **[11_GETTING_STARTED_AUTONOMOUS.md](./doc/11_GETTING_STARTED_AUTONOMOUS.md)** - Quick start ⭐
+- **[12_TROUBLESHOOTING.md](./doc/12_TROUBLESHOOTING.md)** - Common issues
+
+### External Documentation
+
+- **Database schemas**: See `../atlas-database/doc/`
+- **API reference**: http://localhost:8000/docs
+- **Frontend integration**: See `../atlas-frontend/`
 
 ---
 
 ## 🤝 Contributing
 
-This is a thesis project, but contributions welcome!
+1. Create feature branch: `git checkout -b feature/amazing-feature`
+2. Make changes and test thoroughly
+3. Update documentation
+4. Commit: `git commit -m "Add amazing feature"`
+5. Push: `git push origin feature/amazing-feature`
+6. Open Pull Request
 
 ---
 
 ## 📄 License
 
-MIT
+MIT License - see [LICENSE](LICENSE) file for details
 
 ---
 
-## 👨‍💻 Author
+## 🔗 Related Repositories
 
-Built as part of Atlas - Agentic AI Swing Trading Platform
+- **[atlas-database](../atlas-database)** - Centralized database schemas & migrations
+- **[atlas-frontend](../atlas-frontend)** - Next.js frontend application
 
-**This backend is the brain of Atlas - intelligent, observable, and bulletproof.**
+---
+
+## 💬 Support
+
+- **Documentation**: See `doc/` folder
+- **Issues**: Open a GitHub issue
+- **Discussions**: GitHub Discussions
+
+---
+
+**Built with ❤️ for autonomous trading**
