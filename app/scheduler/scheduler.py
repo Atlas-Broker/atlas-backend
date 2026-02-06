@@ -2,7 +2,7 @@
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
-from app.scheduler.jobs import autonomous_pilot_job
+from app.scheduler.jobs import autonomous_pilot_job, agent_competition_job
 from app.config import settings
 from loguru import logger
 
@@ -13,7 +13,7 @@ def start_scheduler():
     """
     Start APScheduler with configured jobs.
 
-    Adds autonomous pilot job based on cron schedule from config.
+    Adds autonomous pilot job and agent competition based on cron schedules.
     """
     # Parse cron expression from settings
     # Format: "minute hour day month day_of_week"
@@ -33,8 +33,24 @@ def start_scheduler():
         max_instances=1,  # Prevent overlapping runs
     )
 
+    # Add AI agent competition job (daily at 10am EST)
+    scheduler.add_job(
+        agent_competition_job,
+        trigger=CronTrigger(
+            hour="10",  # 10am EST
+            day_of_week="mon-fri",  # Market days only
+            timezone="America/New_York",
+        ),
+        id="agent_competition",
+        name="AI Agent Trading Competition",
+        replace_existing=True,
+        max_instances=1,
+    )
+
     scheduler.start()
-    logger.info("Scheduler started with autonomous pilot job (9am, 3pm Mon-Fri EST)")
+    logger.info("Scheduler started:")
+    logger.info("  - Autonomous pilot: 9am, 3pm Mon-Fri EST")
+    logger.info("  - Agent competition: 10am Mon-Fri EST")
 
 
 def stop_scheduler():

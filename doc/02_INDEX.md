@@ -45,6 +45,12 @@ Welcome to Atlas Backend documentation! This folder contains all technical docum
    - Agent communication
    - Trading cycle workflow
 
+7. **[13_AGENT_COMPETITION.md](./13_AGENT_COMPETITION.md)** 🏆
+   - **AI Agent Trading Competition**
+   - 4 Gemini models competing autonomously
+   - Public leaderboard and performance tracking
+   - Explainable AI with reasoning
+
 ---
 
 ### **Configuration & Setup**
@@ -74,7 +80,7 @@ Welcome to Atlas Backend documentation! This folder contains all technical docum
     - S3 storage (future)
     - Artifact storage
     
-12. **[13_TROUBLESHOOTING.md](./13_TROUBLESHOOTING.md)** 🔧
+12. **[14_TROUBLESHOOTING.md](./14_TROUBLESHOOTING.md)** 🔧
     - Common issues and solutions
     - Debugging guide
 
@@ -90,10 +96,11 @@ Welcome to Atlas Backend documentation! This folder contains all technical docum
 | Set up from scratch | [03_SETUP_GUIDE.md](./03_SETUP_GUIDE.md) |
 | **Run autonomous trading** | [12_GETTING_STARTED_AUTONOMOUS.md](./12_GETTING_STARTED_AUTONOMOUS.md) ⭐ |
 | **Understand multi-agent system** | [11_MULTI_AGENT_SYSTEM.md](./11_MULTI_AGENT_SYSTEM.md) ⭐ |
+| **View AI competition** | [13_AGENT_COMPETITION.md](./13_AGENT_COMPETITION.md) 🏆 |
 | Configure environment | [05_ENV_TEMPLATE.md](./05_ENV_TEMPLATE.md) |
 | Setup database | [07_SUPABASE_MIGRATIONS.md](./07_SUPABASE_MIGRATIONS.md) |
 | View project structure | [06_STRUCTURE.md](./06_STRUCTURE.md) |
-| Troubleshooting | [13_TROUBLESHOOTING.md](./13_TROUBLESHOOTING.md) |
+| Troubleshooting | [14_TROUBLESHOOTING.md](./14_TROUBLESHOOTING.md) |
 
 ---
 
@@ -159,9 +166,10 @@ atlas-backend/
 │   ├── 03-10_*.md         # Setup & database docs
 │   ├── 11_MULTI_AGENT_SYSTEM.md        # Multi-agent guide
 │   ├── 12_GETTING_STARTED_AUTONOMOUS.md # Quick start
-│   └── 13_TROUBLESHOOTING.md           # Troubleshooting
+│   ├── 13_AGENT_COMPETITION.md         # AI competition
+│   └── 14_TROUBLESHOOTING.md           # Troubleshooting
 ├── app/
-│   ├── agents/            # 🤖 Multi-agent system
+│   ├── agents/            # 🤖 Multi-agent system + Competition
 │   ├── api/               # 📡 REST endpoints
 │   ├── services/          # 💼 Business logic
 │   └── db/                # 🗄️ Database layers
@@ -196,7 +204,8 @@ atlas-backend/
 ## 📞 Need Help?
 
 - **Multi-agent system?** → [11_MULTI_AGENT_SYSTEM.md](./11_MULTI_AGENT_SYSTEM.md)
-- **Setup issues?** → [03_SETUP_GUIDE.md](./03_SETUP_GUIDE.md) or [13_TROUBLESHOOTING.md](./13_TROUBLESHOOTING.md)
+- **AI competition?** → [13_AGENT_COMPETITION.md](./13_AGENT_COMPETITION.md)
+- **Setup issues?** → [03_SETUP_GUIDE.md](./03_SETUP_GUIDE.md) or [14_TROUBLESHOOTING.md](./14_TROUBLESHOOTING.md)
 - **Quick start?** → [12_GETTING_STARTED_AUTONOMOUS.md](./12_GETTING_STARTED_AUTONOMOUS.md)
 - **API reference?** → http://localhost:8000/docs
 
@@ -205,11 +214,12 @@ atlas-backend/
 ## 🎉 Key Features
 
 ✅ **Multi-Agent System** - 4 specialized AI agents  
+✅ **AI Trading Competition** - 4 Gemini models competing live 🏆  
 ✅ **Agent Communication Hub** - Transparent collaboration  
 ✅ **Enhanced Logging** - Beautiful emoji-based logs  
 ✅ **Complete Observability** - Full agent communication traces  
 ✅ **Production Ready** - Robust error handling  
-✅ **Comprehensive Docs** - 13 detailed guides
+✅ **Comprehensive Docs** - 14 detailed guides
 
 ---
 

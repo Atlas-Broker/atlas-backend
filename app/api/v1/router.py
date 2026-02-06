@@ -1,7 +1,7 @@
 """Main v1 router aggregating all endpoints."""
 
 from fastapi import APIRouter
-from app.api.v1 import agent, orders, portfolio, trades, traces, jobs
+from app.api.v1 import agent, orders, portfolio, trades, traces, jobs, competition
 
 # Create v1 router
 router = APIRouter(prefix="/v1")
@@ -13,3 +13,4 @@ router.include_router(portfolio.router)
 router.include_router(trades.router)
 router.include_router(traces.router)
 router.include_router(jobs.router)
+router.include_router(competition.router)  # Public competition endpoints

@@ -175,3 +175,26 @@ async def get_multiple_quotes(symbols: list[str]) -> Dict[str, Any]:
             results[symbol] = data
 
     return results
+
+
+async def get_stock_price(symbol: str) -> Optional[Dict[str, Any]]:
+    """
+    Get current stock price (simple wrapper).
+
+    Args:
+        symbol: Stock ticker
+
+    Returns:
+        Dictionary with price data or None if failed
+    """
+    try:
+        data = await get_market_data(symbol)
+        return {
+            "symbol": symbol,
+            "price": data["current_price"],
+            "change_percent": data.get("change_percent", 0),
+            "timestamp": data["timestamp"],
+        }
+    except Exception as e:
+        logger.error(f"Failed to get price for {symbol}: {e}")
+        return None

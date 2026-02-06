@@ -285,7 +285,9 @@ async def get_agent_reasoning_endpoint(
 
     return [
         ReasoningResponse(
-            reasoning_type=r.reasoning_type, content=r.content, created_at=r.created_at.isoformat()
+            reasoning_type=r.reasoning_type,
+            content=r.content,
+            created_at=r.created_at.isoformat(),
         )
         for r in reasoning
     ]

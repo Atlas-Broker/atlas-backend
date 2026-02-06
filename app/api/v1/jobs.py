@@ -125,3 +125,53 @@ async def trigger_pilot_dev():
     except Exception as e:
         logger.error(f"DEV pilot run failed: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Pilot run failed: {str(e)}")
+
+
+@router.post("/run-competition-dev")
+async def trigger_competition_dev():
+    """
+    🔓 DEV ONLY: Trigger AI agent competition without authentication.
+    
+    ⚠️ WARNING: This endpoint bypasses authentication!
+    Only available in development mode.
+    
+    Use this for local testing of the multi-agent competition.
+    """
+    from app.config import settings
+    from app.agents.competition_coordinator import competition_coordinator
+    
+    if settings.ENVIRONMENT != "development":
+        raise HTTPException(
+            status_code=403,
+            detail="This endpoint is only available in development mode"
+        )
+    
+    logger.info("DEV: Manually triggered competition (no auth)")
+    
+    try:
+        # Initialize agents if needed
+        if not competition_coordinator.agents:
+            await competition_coordinator.initialize_agents()
+        
+        # Run competition with test watchlist
+        watchlist = ["AAPL", "MSFT", "GOOGL", "AMZN", "NVDA"]
+        results = await competition_coordinator.run_daily_competition(watchlist)
+        
+        return {
+            "status": "completed",
+            "mode": "development",
+            "agents_count": len(results),
+            "message": "✅ Competition run completed (DEV MODE)",
+            "results": [
+                {
+                    "agent": r.get("agent"),
+                    "trades": r.get("trades", 0),
+                    "equity": r.get("equity", 0),
+                }
+                for r in results if isinstance(r, dict)
+            ]
+        }
+        
+    except Exception as e:
+        logger.error(f"DEV competition failed: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Competition failed: {str(e)}")
