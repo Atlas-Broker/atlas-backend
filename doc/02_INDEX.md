@@ -11,17 +11,17 @@ Welcome to Atlas Backend documentation! This folder contains all technical docum
 
 ### **Getting Started**
 
-1. **[00_README.md](./00_README.md)** 📘
+1. **[01_README.md](./01_README.md)** 📘
    - Main project README
    - Overview and architecture
    - Quick start guide
    
-2. **[02_SETUP_GUIDE.md](./02_SETUP_GUIDE.md)** ⚙️
+2. **[03_SETUP_GUIDE.md](./03_SETUP_GUIDE.md)** ⚙️
    - Complete setup instructions
    - Database configuration
    - Environment setup
    
-3. **[11_GETTING_STARTED_AUTONOMOUS.md](./11_GETTING_STARTED_AUTONOMOUS.md)** 🚀 **NEW!**
+3. **[12_GETTING_STARTED_AUTONOMOUS.md](./12_GETTING_STARTED_AUTONOMOUS.md)** 🚀
    - Quick start for autonomous trading
    - Run multi-agent system locally
    - Watch agents in action
@@ -30,16 +30,16 @@ Welcome to Atlas Backend documentation! This folder contains all technical docum
 
 ### **Architecture & Design**
 
-4. **[03_PROJECT_SUMMARY.md](./03_PROJECT_SUMMARY.md)** 📋
+4. **[04_PROJECT_SUMMARY.md](./04_PROJECT_SUMMARY.md)** 📋
    - High-level project overview
    - What was built
    - Features and capabilities
    
-5. **[05_STRUCTURE.md](./05_STRUCTURE.md)** 🏗️
+5. **[06_STRUCTURE.md](./06_STRUCTURE.md)** 🏗️
    - Project file structure
    - Directory organization
    
-6. **[10_MULTI_AGENT_SYSTEM.md](./10_MULTI_AGENT_SYSTEM.md)** 🤖 **NEW!**
+6. **[11_MULTI_AGENT_SYSTEM.md](./11_MULTI_AGENT_SYSTEM.md)** 🤖
    - **Multi-agent architecture**
    - 4 specialized AI agents
    - Agent communication
@@ -49,7 +49,7 @@ Welcome to Atlas Backend documentation! This folder contains all technical docum
 
 ### **Configuration & Setup**
 
-7. **[04_ENV_TEMPLATE.md](./04_ENV_TEMPLATE.md)** 🔐
+7. **[05_ENV_TEMPLATE.md](./05_ENV_TEMPLATE.md)** 🔐
    - Environment variables guide
    - Configuration options
    - API keys and credentials
@@ -58,21 +58,25 @@ Welcome to Atlas Backend documentation! This folder contains all technical docum
 
 ### **Database Documentation**
 
-8. **[06_SUPABASE_MIGRATIONS.md](./06_SUPABASE_MIGRATIONS.md)** 🗄️
+8. **[07_SUPABASE_MIGRATIONS.md](./07_SUPABASE_MIGRATIONS.md)** 🗄️
    - Supabase SQL migrations
    - Schema overview
    
-9. **[07_MONGODB.md](./07_MONGODB.md)** 🍃
+9. **[08_MONGODB.md](./08_MONGODB.md)** 🍃
    - MongoDB collections
    - Agent trace storage
    
-10. **[08_SUPABASE_DB.md](./08_SUPABASE_DB.md)** 📊
+10. **[09_SUPABASE_DB.md](./09_SUPABASE_DB.md)** 📊
     - Supabase database layer
     - Query operations
     
-11. **[09_S3_STORAGE.md](./09_S3_STORAGE.md)** ☁️
+11. **[10_S3_STORAGE.md](./10_S3_STORAGE.md)** ☁️
     - S3 storage (future)
     - Artifact storage
+    
+12. **[13_TROUBLESHOOTING.md](./13_TROUBLESHOOTING.md)** 🔧
+    - Common issues and solutions
+    - Debugging guide
 
 ---
 
@@ -82,31 +86,32 @@ Welcome to Atlas Backend documentation! This folder contains all technical docum
 
 | Goal | Document |
 |------|----------|
-| Get project overview | [00_README.md](./00_README.md) |
-| Set up from scratch | [02_SETUP_GUIDE.md](./02_SETUP_GUIDE.md) |
-| **Run autonomous trading** | [11_GETTING_STARTED_AUTONOMOUS.md](./11_GETTING_STARTED_AUTONOMOUS.md) ⭐ |
-| **Understand multi-agent system** | [10_MULTI_AGENT_SYSTEM.md](./10_MULTI_AGENT_SYSTEM.md) ⭐ |
-| Configure environment | [04_ENV_TEMPLATE.md](./04_ENV_TEMPLATE.md) |
-| Setup database | [06_SUPABASE_MIGRATIONS.md](./06_SUPABASE_MIGRATIONS.md) |
-| View project structure | [05_STRUCTURE.md](./05_STRUCTURE.md) |
+| Get project overview | [01_README.md](./01_README.md) |
+| Set up from scratch | [03_SETUP_GUIDE.md](./03_SETUP_GUIDE.md) |
+| **Run autonomous trading** | [12_GETTING_STARTED_AUTONOMOUS.md](./12_GETTING_STARTED_AUTONOMOUS.md) ⭐ |
+| **Understand multi-agent system** | [11_MULTI_AGENT_SYSTEM.md](./11_MULTI_AGENT_SYSTEM.md) ⭐ |
+| Configure environment | [05_ENV_TEMPLATE.md](./05_ENV_TEMPLATE.md) |
+| Setup database | [07_SUPABASE_MIGRATIONS.md](./07_SUPABASE_MIGRATIONS.md) |
+| View project structure | [06_STRUCTURE.md](./06_STRUCTURE.md) |
+| Troubleshooting | [13_TROUBLESHOOTING.md](./13_TROUBLESHOOTING.md) |
 
 ---
 
 ## 🔥 Most Important Docs
 
 ### **For New Users:**
-1. **[00_README.md](./00_README.md)** - Start here!
-2. **[02_SETUP_GUIDE.md](./02_SETUP_GUIDE.md)** - Setup instructions
-3. **[11_GETTING_STARTED_AUTONOMOUS.md](./11_GETTING_STARTED_AUTONOMOUS.md)** - Run autonomous trading
+1. **[01_README.md](./01_README.md)** - Start here!
+2. **[03_SETUP_GUIDE.md](./03_SETUP_GUIDE.md)** - Setup instructions
+3. **[12_GETTING_STARTED_AUTONOMOUS.md](./12_GETTING_STARTED_AUTONOMOUS.md)** - Run autonomous trading
 
 ### **For Understanding Multi-Agent System:**
-1. **[10_MULTI_AGENT_SYSTEM.md](./10_MULTI_AGENT_SYSTEM.md)** - Complete architecture guide ⭐
-2. **[11_GETTING_STARTED_AUTONOMOUS.md](./11_GETTING_STARTED_AUTONOMOUS.md)** - See it in action
+1. **[11_MULTI_AGENT_SYSTEM.md](./11_MULTI_AGENT_SYSTEM.md)** - Complete architecture guide ⭐
+2. **[12_GETTING_STARTED_AUTONOMOUS.md](./12_GETTING_STARTED_AUTONOMOUS.md)** - See it in action
 
 ### **For Development:**
-1. **[03_PROJECT_SUMMARY.md](./03_PROJECT_SUMMARY.md)** - What's been built
-2. **[05_STRUCTURE.md](./05_STRUCTURE.md)** - File organization
-3. **[07_MONGODB.md](./07_MONGODB.md)** - Agent traces
+1. **[04_PROJECT_SUMMARY.md](./04_PROJECT_SUMMARY.md)** - What's been built
+2. **[06_STRUCTURE.md](./06_STRUCTURE.md)** - File organization
+3. **[08_MONGODB.md](./08_MONGODB.md)** - Agent traces
 
 ---
 
@@ -119,7 +124,7 @@ Atlas now uses **4 specialized AI agents** that collaborate for autonomous tradi
 3. **Portfolio Manager** 💼 - Portfolio state and constraints
 4. **Execution Agent** 🎯 - Final trading decisions
 
-**See**: [10_MULTI_AGENT_SYSTEM.md](./10_MULTI_AGENT_SYSTEM.md)
+**See**: [11_MULTI_AGENT_SYSTEM.md](./11_MULTI_AGENT_SYSTEM.md)
 
 ---
 
@@ -140,7 +145,7 @@ uvicorn app.main:app --reload
 # http://localhost:8000/docs
 ```
 
-**Full guide**: [11_GETTING_STARTED_AUTONOMOUS.md](./11_GETTING_STARTED_AUTONOMOUS.md)
+**Full guide**: [12_GETTING_STARTED_AUTONOMOUS.md](./12_GETTING_STARTED_AUTONOMOUS.md)
 
 ---
 
@@ -149,11 +154,12 @@ uvicorn app.main:app --reload
 ```
 atlas-backend/
 ├── doc/                    # 📚 You are here
-│   ├── 00_README.md       # Main README
-│   ├── 01_INDEX.md        # This file
-│   ├── 02-09_*.md         # Setup & database docs
-│   ├── 10_MULTI_AGENT_SYSTEM.md        # 🆕 Multi-agent guide
-│   └── 11_GETTING_STARTED_AUTONOMOUS.md # 🆕 Quick start
+│   ├── 01_README.md       # Main README
+│   ├── 02_INDEX.md        # This file
+│   ├── 03-10_*.md         # Setup & database docs
+│   ├── 11_MULTI_AGENT_SYSTEM.md        # Multi-agent guide
+│   ├── 12_GETTING_STARTED_AUTONOMOUS.md # Quick start
+│   └── 13_TROUBLESHOOTING.md           # Troubleshooting
 ├── app/
 │   ├── agents/            # 🤖 Multi-agent system
 │   ├── api/               # 📡 REST endpoints
@@ -169,13 +175,13 @@ atlas-backend/
 ## 🎓 Learning Path
 
 ### **Day 1: Setup**
-1. Read [00_README.md](./00_README.md)
-2. Follow [02_SETUP_GUIDE.md](./02_SETUP_GUIDE.md)
+1. Read [01_README.md](./01_README.md)
+2. Follow [03_SETUP_GUIDE.md](./03_SETUP_GUIDE.md)
 3. Get server running
 
 ### **Day 2: Multi-Agent System**
-1. Read [10_MULTI_AGENT_SYSTEM.md](./10_MULTI_AGENT_SYSTEM.md)
-2. Follow [11_GETTING_STARTED_AUTONOMOUS.md](./11_GETTING_STARTED_AUTONOMOUS.md)
+1. Read [11_MULTI_AGENT_SYSTEM.md](./11_MULTI_AGENT_SYSTEM.md)
+2. Follow [12_GETTING_STARTED_AUTONOMOUS.md](./12_GETTING_STARTED_AUTONOMOUS.md)
 3. Run autonomous pilot
 4. Watch agents collaborate!
 
@@ -189,23 +195,21 @@ atlas-backend/
 
 ## 📞 Need Help?
 
-- **Multi-agent system?** → [10_MULTI_AGENT_SYSTEM.md](./10_MULTI_AGENT_SYSTEM.md)
-- **Setup issues?** → [02_SETUP_GUIDE.md](./02_SETUP_GUIDE.md)
-- **Quick start?** → [11_GETTING_STARTED_AUTONOMOUS.md](./11_GETTING_STARTED_AUTONOMOUS.md)
+- **Multi-agent system?** → [11_MULTI_AGENT_SYSTEM.md](./11_MULTI_AGENT_SYSTEM.md)
+- **Setup issues?** → [03_SETUP_GUIDE.md](./03_SETUP_GUIDE.md) or [13_TROUBLESHOOTING.md](./13_TROUBLESHOOTING.md)
+- **Quick start?** → [12_GETTING_STARTED_AUTONOMOUS.md](./12_GETTING_STARTED_AUTONOMOUS.md)
 - **API reference?** → http://localhost:8000/docs
 
 ---
 
-## 🎉 What's New in v2.0
+## 🎉 Key Features
 
 ✅ **Multi-Agent System** - 4 specialized AI agents  
 ✅ **Agent Communication Hub** - Transparent collaboration  
 ✅ **Enhanced Logging** - Beautiful emoji-based logs  
 ✅ **Complete Observability** - Full agent communication traces  
 ✅ **Production Ready** - Robust error handling  
-✅ **Comprehensive Docs** - 2 new detailed guides  
-
-See [REFURBISHMENT_SUMMARY.md](../REFURBISHMENT_SUMMARY.md) for complete changelog.
+✅ **Comprehensive Docs** - 13 detailed guides
 
 ---
 

@@ -212,3 +212,231 @@ class AuditLog(Base):
     ip_address = Column(String, nullable=True)
     user_agent = Column(String, nullable=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+# ============================================
+# AGENT COMPETITION MODELS
+# ============================================
+
+
+class AgentCompetitor(Base):
+    """AI models competing in live trading arena."""
+
+    __tablename__ = "agent_competitors"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String, nullable=False, unique=True)
+    model_id = Column(String, nullable=False)
+    description = Column(Text, nullable=True)
+    initial_capital = Column(Numeric(15, 2), nullable=False, default=30000.00)
+    current_equity = Column(Numeric(15, 2), nullable=False, default=30000.00)
+    total_return = Column(Numeric(10, 4), default=0.0000)
+    sharpe_ratio = Column(Numeric(10, 4), nullable=True)
+    max_drawdown = Column(Numeric(10, 4), nullable=True)
+    win_rate = Column(Numeric(5, 2), nullable=True)
+    total_trades = Column(Integer, default=0)
+    is_active = Column(Boolean, nullable=False, default=True)
+    started_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    last_trade_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class AgentDailyPerformance(Base):
+    """Daily performance snapshots for charting."""
+
+    __tablename__ = "agent_daily_performance"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    competitor_id = Column(UUID(as_uuid=True), ForeignKey("agent_competitors.id", ondelete="CASCADE"), nullable=False)
+    trading_date = Column(DateTime, nullable=False)
+    equity = Column(Numeric(15, 2), nullable=False)
+    cash = Column(Numeric(15, 2), nullable=False)
+    positions_value = Column(Numeric(15, 2), nullable=False)
+    daily_return = Column(Numeric(10, 4), nullable=True)
+    cumulative_return = Column(Numeric(10, 4), nullable=True)
+    trades_today = Column(Integer, default=0)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class AgentPositionModel(Base):
+    """Current holdings of each AI agent."""
+
+    __tablename__ = "agent_positions"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    competitor_id = Column(UUID(as_uuid=True), ForeignKey("agent_competitors.id", ondelete="CASCADE"), nullable=False)
+    symbol = Column(String, nullable=False)
+    quantity = Column(Integer, nullable=False)
+    avg_entry_price = Column(Numeric(12, 2), nullable=False)
+    current_price = Column(Numeric(12, 2), nullable=True)
+    unrealized_pnl = Column(Numeric(12, 2), nullable=True)
+    cost_basis = Column(Numeric(15, 2), nullable=False)
+    market_value = Column(Numeric(15, 2), nullable=True)
+    weight = Column(Numeric(5, 2), nullable=True)
+    opened_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class AgentTrade(Base):
+    """Complete trading history of all agents."""
+
+    __tablename__ = "agent_trades"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    competitor_id = Column(UUID(as_uuid=True), ForeignKey("agent_competitors.id", ondelete="CASCADE"), nullable=False)
+    symbol = Column(String, nullable=False)
+    side = Column(Enum(OrderSide), nullable=False)
+    quantity = Column(Integer, nullable=False)
+    price = Column(Numeric(12, 2), nullable=False)
+    total_amount = Column(Numeric(15, 2), nullable=False)
+    reasoning_summary = Column(Text, nullable=True)
+    confidence_score = Column(Numeric(3, 2), nullable=True)
+    executed_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class AgentReasoningModel(Base):
+    """Detailed reasoning for explainable AI."""
+
+    __tablename__ = "agent_reasoning"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    competitor_id = Column(UUID(as_uuid=True), ForeignKey("agent_competitors.id", ondelete="CASCADE"), nullable=False)
+    trade_id = Column(UUID(as_uuid=True), ForeignKey("agent_trades.id", ondelete="CASCADE"), nullable=True)
+    reasoning_type = Column(String, nullable=False)
+    content = Column(Text, nullable=False)
+    metadata = Column(JSONB, nullable=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class AgentLeaderboard(Base):
+    """Daily rankings snapshot for historical comparison."""
+
+    __tablename__ = "agent_leaderboard"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    competitor_id = Column(UUID(as_uuid=True), ForeignKey("agent_competitors.id", ondelete="CASCADE"), nullable=False)
+    ranking_date = Column(DateTime, nullable=False)
+    rank = Column(Integer, nullable=False)
+    equity = Column(Numeric(15, 2), nullable=False)
+    total_return = Column(Numeric(10, 4), nullable=False)
+    daily_return = Column(Numeric(10, 4), nullable=True)
+    sharpe_ratio = Column(Numeric(10, 4), nullable=True)
+    win_rate = Column(Numeric(5, 2), nullable=True)
+    total_trades = Column(Integer, default=0)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+# ============================================
+# AGENT COMPETITION MODELS
+# ============================================
+
+
+class AgentCompetitor(Base):
+    """AI models competing in live trading arena."""
+
+    __tablename__ = "agent_competitors"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String, nullable=False, unique=True)
+    model_id = Column(String, nullable=False)
+    description = Column(Text, nullable=True)
+    initial_capital = Column(Numeric(15, 2), nullable=False, default=30000.00)
+    current_equity = Column(Numeric(15, 2), nullable=False, default=30000.00)
+    total_return = Column(Numeric(10, 4), default=0.0000)
+    sharpe_ratio = Column(Numeric(10, 4), nullable=True)
+    max_drawdown = Column(Numeric(10, 4), nullable=True)
+    win_rate = Column(Numeric(5, 2), nullable=True)
+    total_trades = Column(Integer, default=0)
+    is_active = Column(Boolean, nullable=False, default=True)
+    started_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    last_trade_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class AgentDailyPerformance(Base):
+    """Daily performance snapshots for charting."""
+
+    __tablename__ = "agent_daily_performance"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    competitor_id = Column(UUID(as_uuid=True), ForeignKey("agent_competitors.id", ondelete="CASCADE"), nullable=False)
+    trading_date = Column(DateTime, nullable=False)
+    equity = Column(Numeric(15, 2), nullable=False)
+    cash = Column(Numeric(15, 2), nullable=False)
+    positions_value = Column(Numeric(15, 2), nullable=False)
+    daily_return = Column(Numeric(10, 4), nullable=True)
+    cumulative_return = Column(Numeric(10, 4), nullable=True)
+    trades_today = Column(Integer, default=0)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class AgentPositionModel(Base):
+    """Current holdings of each AI agent."""
+
+    __tablename__ = "agent_positions"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    competitor_id = Column(UUID(as_uuid=True), ForeignKey("agent_competitors.id", ondelete="CASCADE"), nullable=False)
+    symbol = Column(String, nullable=False)
+    quantity = Column(Integer, nullable=False)
+    avg_entry_price = Column(Numeric(12, 2), nullable=False)
+    current_price = Column(Numeric(12, 2), nullable=True)
+    unrealized_pnl = Column(Numeric(12, 2), nullable=True)
+    cost_basis = Column(Numeric(15, 2), nullable=False)
+    market_value = Column(Numeric(15, 2), nullable=True)
+    weight = Column(Numeric(5, 2), nullable=True)
+    opened_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class AgentTrade(Base):
+    """Complete trading history of all agents."""
+
+    __tablename__ = "agent_trades"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    competitor_id = Column(UUID(as_uuid=True), ForeignKey("agent_competitors.id", ondelete="CASCADE"), nullable=False)
+    symbol = Column(String, nullable=False)
+    side = Column(Enum(OrderSide), nullable=False)
+    quantity = Column(Integer, nullable=False)
+    price = Column(Numeric(12, 2), nullable=False)
+    total_amount = Column(Numeric(15, 2), nullable=False)
+    reasoning_summary = Column(Text, nullable=True)
+    confidence_score = Column(Numeric(3, 2), nullable=True)
+    executed_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class AgentReasoningModel(Base):
+    """Detailed reasoning for explainable AI."""
+
+    __tablename__ = "agent_reasoning"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    competitor_id = Column(UUID(as_uuid=True), ForeignKey("agent_competitors.id", ondelete="CASCADE"), nullable=False)
+    trade_id = Column(UUID(as_uuid=True), ForeignKey("agent_trades.id", ondelete="CASCADE"), nullable=True)
+    reasoning_type = Column(String, nullable=False)
+    content = Column(Text, nullable=False)
+    metadata = Column(JSONB, nullable=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class AgentLeaderboard(Base):
+    """Daily rankings snapshot for historical comparison."""
+
+    __tablename__ = "agent_leaderboard"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    competitor_id = Column(UUID(as_uuid=True), ForeignKey("agent_competitors.id", ondelete="CASCADE"), nullable=False)
+    ranking_date = Column(DateTime, nullable=False)
+    rank = Column(Integer, nullable=False)
+    equity = Column(Numeric(15, 2), nullable=False)
+    total_return = Column(Numeric(10, 4), nullable=False)
+    daily_return = Column(Numeric(10, 4), nullable=True)
+    sharpe_ratio = Column(Numeric(10, 4), nullable=True)
+    win_rate = Column(Numeric(5, 2), nullable=True)
+    total_trades = Column(Integer, default=0)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
